@@ -19,6 +19,8 @@ export default class PageTypeWelcome extends Page {
         <h1>{t('boilerplate')}</h1>
         <p>{t('another_one')}</p>
         <Link to="/examples/todos">{t('todo_list_example')}</Link>
+        <br />
+        <Link to="/landing">{t('landing_example')}</Link>
       </div>
     );
   }
