@@ -12,14 +12,14 @@ const LANGS = ['en', 'ru'];
 const IS_DEBUG = ENV === 'development';
 const PLUGINS = [
   new webpack.ProvidePlugin({ React: 'react' }),
-  new optimize.DedupePlugin(),
-  new optimize.OccurenceOrderPlugin(),
   new optimize.AggressiveMergingPlugin(),
   new AssetsPlugin({
     path: path.join(__dirname, 'build'),
     filename: 'assets.json'
   }),
-  new ExtractTextPlugin('bundle_[hash].css')
+  new ExtractTextPlugin({
+    filename: 'bundle_[hash].css'
+  })
 ];
 
 module.exports = LANGS.map(lang => ({
@@ -32,52 +32,70 @@ module.exports = LANGS.map(lang => ({
 
   cache: IS_DEBUG,
 
-  debug: IS_DEBUG,
-
   plugins: PLUGINS.concat([
     new webpack.IgnorePlugin(new RegExp(`^\.\/(?!${lang}$)`), /i18n$/),
     new webpack.IgnorePlugin(/^config(\/server)?(\/)?$/),
     new webpack.DefinePlugin({
       LANG: JSON.stringify(lang),
       'process.env.NODE_ENV': JSON.stringify(ENV)
+    }),
+    new webpack.LoaderOptionsPlugin({
+      debug: IS_DEBUG,
+      options: {
+        context: __dirname
+      }
     })
   ]).concat(IS_DEBUG ? [] : [
     new optimize.UglifyJsPlugin({ comments: false })
   ]),
 
-  postcss: [
-    cssnext({
-      browsers: '> 0.1%',
-      url: false
-    })
-  ],
-
   devtool: IS_DEBUG ? 'source-map' : '',
 
   resolve: {
-    root: __dirname
+    modules: [__dirname, 'node_modules'],
+    extensions: ['.js', '.json', '.jsx', '.css']
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel'
+        use: 'babel-loader'
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style', IS_DEBUG ?
-          'css?modules&importLoaders=1!postcss' :
-          'css?modules&importLoaders=1&minimize!postcss')
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          loader: [
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true,
+                modules: true,
+                importLoaders: true,
+                minimize: !IS_DEBUG
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: { plugins: cssnext }
+            }
+          ]
+        })
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg)$/,
-        loader: 'url?limit=32768!image-webpack'
+        use: [
+          'url-loader?limit=32768',
+          'image-webpack-loader?limit=32768'
+        ]
       },
       {
         test: /\.(woff|woff2|ttf|eot)$/,
-        loader: 'url?limit=32768'
+        use: [
+          'url-loader?limit=32768'
+        ]
       }
     ]
   }

@@ -32,46 +32,51 @@ module.exports = {
 
   cache: IS_DEBUG,
 
-  debug: IS_DEBUG,
-
   plugins: [
     new webpack.DefinePlugin({
       LANG: JSON.stringify(null),
       'process.env.NODE_ENV': JSON.stringify(ENV)
     }),
+    new webpack.LoaderOptionsPlugin({
+      debug: IS_DEBUG
+    }),
     new webpack.ProvidePlugin({ React: 'react' }),
-    new webpack.optimize.OccurenceOrderPlugin(),
     new ExtractTextPlugin('.modules.css')
   ],
 
   devtool: IS_DEBUG ? 'source-map' : '',
 
   resolve: {
-    root: __dirname
+    modules: [__dirname, 'node_modules'],
+    extensions: ['.js', '.json', '.jsx', '.css']
   },
 
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel'
-      },
-      {
-        test: /\.json$/,
-        loader: 'json'
+        use: 'babel-loader'
       },
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style', 'css?modules')
+        use: ExtractTextPlugin.extract({
+          fallback: 'style',
+          use: {
+            loader: 'css-loader',
+            options: {
+              modules: true
+            }
+          }
+        })
       },
       {
         test: /\.(png|jpg|jpeg|gif|svg)$/,
-        loader: 'null'
+        use: 'null-loader'
       },
       {
         test: /\.(woff|woff2|ttf|eot)$/,
-        loader: 'null'
+        use: 'null-loader'
       }
     ]
   }
