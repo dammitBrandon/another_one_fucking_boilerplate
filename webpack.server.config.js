@@ -47,7 +47,7 @@ module.exports = {
   devtool: IS_DEBUG ? 'source-map' : '',
 
   resolve: {
-    modules: [__dirname, 'node_modules'],
+    modules: [__dirname, 'node_modules', 'core'],
     extensions: ['.js', '.json', '.jsx', '.css']
   },
 
@@ -61,7 +61,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
-          fallback: 'style',
+          fallback: 'style-loader',
           use: {
             loader: 'css-loader',
             options: {

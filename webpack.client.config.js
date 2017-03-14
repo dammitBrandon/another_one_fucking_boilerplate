@@ -42,6 +42,12 @@ module.exports = LANGS.map(lang => ({
     new webpack.LoaderOptionsPlugin({
       debug: IS_DEBUG,
       options: {
+        postcss: [
+          cssnext({
+            browsers: '> 0.1%',
+            url: false
+          })
+        ],
         context: __dirname
       }
     })
@@ -67,7 +73,7 @@ module.exports = LANGS.map(lang => ({
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          loader: [
+          use: [
             {
               loader: 'css-loader',
               options: {
