@@ -9,7 +9,7 @@ module.exports = shipit => {
     default: {
       workspace: '/tmp/aofb',
       deployTo: '/srv/aofb',
-      repositoryUrl: 'https://github.com/VodkaBears/another-one-fucking-boilerplate.git',
+      repositoryUrl: 'https://github.com/dammitBrandon/another_one_fucking_boilerplate',
       ignores: [
         '.*',
         'db',

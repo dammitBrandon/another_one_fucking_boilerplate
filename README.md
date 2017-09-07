@@ -1,4 +1,4 @@
-Another one fucking boilerplate
+SAT.ACT Right PrepBot
 ===============================
 
 [![Build status](https://img.shields.io/travis/VodkaBears/another-one-fucking-boilerplate.svg?style=flat-square)](https://travis-ci.org/VodkaBears/another-one-fucking-boilerplate)

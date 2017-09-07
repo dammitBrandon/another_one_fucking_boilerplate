@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "another-one-fucking-boilerplate",
+  "name": "SAT.ACT Right PrepBot",
   "version": "0.0.1",
-  "description": "Yes, another one",
+  "description": "Its for the children, putting them in the best possible position to succeed and get into their dream school.",
   "scripts": {
     "clean": "rm -rf build/",
     "lint": "eslint . --debug --ignore-path .gitignore && csscomb -l -v client/",
