@@ -4,5 +4,7 @@ export default {
   page_title: htmlRu.default_title,
   another_one: 'Еще один, мать его',
   boilerplate: 'Бойлерплейт',
-  todo_list_example: 'Пример списка тудушек'
+  todo_list_example: 'Пример списка тудушек',
+  landing_example: 'landing page',
+  new_landing_example: 'new landing page'
 };

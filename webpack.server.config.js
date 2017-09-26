@@ -19,6 +19,11 @@ module.exports = {
     libraryTarget: 'commonjs2'
   },
 
+  externals: {
+    jquery: 'jQuery',
+    foundation: 'Foundation'
+  },
+
   target: 'node',
 
   node: {
@@ -48,7 +53,7 @@ module.exports = {
 
   resolve: {
     modules: [__dirname, 'node_modules', 'core'],
-    extensions: ['.js', '.json', '.jsx', '.css']
+    extensions: ['.js', '.json', '.jsx', '.css', '.scss']
   },
 
   module: {
@@ -57,6 +62,31 @@ module.exports = {
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: 'babel-loader'
+      },
+      {
+        test: /\.scss$/,
+        exclude: /node_modules/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true
+              }
+            },
+            {
+              loader: 'postcss-loader'
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+                outputStyle: 'expanded'
+              }
+            }
+          ]
+        })
       },
       {
         test: /\.css$/,

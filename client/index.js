@@ -5,6 +5,8 @@ import { Router, browserHistory } from 'react-router';
 import I18N from 'lib/i18n';
 import routes from './routes';
 
+import './foundation.scss';
+
 function createElement(Component, props) {
   if (INITIAL_DATA) {
     props = Object.assign({}, props, INITIAL_DATA);

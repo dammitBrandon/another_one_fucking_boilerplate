@@ -30,6 +30,11 @@ module.exports = LANGS.map(lang => ({
     filename: 'bundle_[hash].' + lang + '.js'
   },
 
+  externals: {
+    foundation: 'Foundation',
+    jquery: 'jQuery'
+  },
+
   cache: IS_DEBUG,
 
   plugins: PLUGINS.concat([
@@ -59,7 +64,10 @@ module.exports = LANGS.map(lang => ({
 
   resolve: {
     modules: [__dirname, 'node_modules'],
-    extensions: ['.js', '.json', '.jsx', '.css']
+    extensions: ['.js', '.json', '.jsx', '.css', '.scss'],
+    alias: {
+      foundation: path.resolve(__dirname, 'node_modules/foundation-sites/dist/js/foundation.js')
+    }
   },
 
   module: {
@@ -68,6 +76,34 @@ module.exports = LANGS.map(lang => ({
         test: /\.jsx?$/,
         exclude: /node_modules/,
         use: 'babel-loader'
+      },
+      {
+        test: /\.scss$/,
+        include: [
+          path.resolve(__dirname, 'node_modules'),
+          path.resolve(__dirname, 'client')
+        ],
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: true
+              }
+            },
+            {
+              loader: 'postcss-loader'
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: true,
+                outputStyle: 'expanded'
+              }
+            }
+          ]
+        })
       },
       {
         test: /\.css$/,
