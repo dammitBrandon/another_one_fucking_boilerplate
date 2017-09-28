@@ -4,5 +4,7 @@ export default {
   PageTypeTodosExample_title: 'Another one fucking to-do list',
   PageTypeTodosExample_description: 'Another one to-do list.',
   PageTypeLanding_title: 'The Landing Page',
-  PageTypeLanding_description: 'The Landing Page description'
+  PageTypeLanding_description: 'The Landing Page description',
+  PageTypeRegistration_title: 'The Registration Page',
+  PageTypeRegistration_description: 'The Registration Page description'
 };

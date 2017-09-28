@@ -6,5 +6,6 @@ export default {
   boilerplate: 'Boilerplate',
   todo_list_example: 'To-do list example',
   landing_example: 'landing page',
-  new_landing_example: 'new landing page'
+  new_landing_example: 'new landing page',
+  registration: 'registration page'
 };

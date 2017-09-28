@@ -18,8 +18,32 @@ export default class PageTypeNewLanding extends Page {
     return (
       <div>
         <Header />
-        <h1>{t('welcome')}</h1>
-        <h1>This is the new landing example</h1>
+        <div className="grid-container fluid">
+          <div className="grid-x">
+            <div className="medium-4 cell">
+              <p>
+                {t('join_txt')}
+              </p>
+              <br />
+              <button type="button" className="button">{t('join_btn')}</button>
+            </div>
+            <div className="medium-4 cell">
+              <p>
+                {t('learn_more_txt')}
+              </p>
+              <br />
+              <button type="button" className="success button">{t('learn_more_btn')}</button>
+            </div>
+            <div className="medium-4 cell">
+              <p>
+                {t('login_txt')}
+              </p>
+              <br />
+              <button type="button" className="alert button">{t('login_btn')}</button>
+            </div>
+          </div>
+
+        </div>
         <Loader isLoading={state.isLoading} />
       </div>
     );

@@ -1,9 +1,9 @@
-import htmlEn from 'client/components/html/i18n/en';
+import htmlRu from 'client/components/html/i18n/ru';
 
 export default {
-  page_title: htmlEn.PageTypeLanding_title,
-  hero: 'The new landing page',
-  welcome: 'Listen to me, we chaning the world',
+  page_title: htmlRu.PageTypeRegistration_title,
+  hero: 'ТудушкиТудушки',
+  welcome: '!!!ТудушкиТудушки!!!',
   join_txt: 'Integer efficitur at ligula id sollicitudin. In aliquet,' +
   'libero non vulputate molestie, nisl lectus facilisis neque, sed sagittis ligula erat ut metus.' +
   'Duis lobortis dui porta, pellentesque turpis sit amet, ultrices ligula.',

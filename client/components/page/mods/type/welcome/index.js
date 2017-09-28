@@ -24,6 +24,9 @@ export default class PageTypeWelcome extends Page {
         <Link to="/landing">{t('landing_example')}</Link>
         <br />
         <Link to="/new-landing">{t('new_landing_example')}</Link>
+        <br />
+        <Link to="/registration">{t('registration')}</Link>
+
       </div>
     );
   }
