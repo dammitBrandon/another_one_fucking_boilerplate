@@ -33,14 +33,14 @@ export default class PageTypeRegistration extends Page {
           <div className="grid-x grid-padding-x">
             <div className="medium-6 cell">
               <label>
-                <input type="number" placeholder="Phone Number"/>
+                <input type="number" placeholder="Phone Number" />
               </label>
             </div>
           </div>
           <div className="grid-x grid-padding-x">
             <div className="medium-6 cell">
               <label>
-                <input type="text" placeholder="Email Address"/>
+                <input type="text" placeholder="Email Address" />
               </label>
             </div>
           </div>

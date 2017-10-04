@@ -1,4 +1,5 @@
 import Component from 'lib/component';
+import { Link } from 'react-router';
 
 export default class Header extends Component {
 
@@ -13,13 +14,13 @@ export default class Header extends Component {
         <div className="top-bar" id="responsive-menu">
           <div className="top-bar-left">
             <ul className="dropdown menu" data-dropdown-menu="true">
-              <li className="menu-text">SAT.ACT Right Daily</li>
+              <li className="menu-text"><Link to="/new-landing">SAT.ACT Right Daily</Link></li>
             </ul>
           </div>
           <div className="top-bar-right">
             <ul className="dropdown menu">
-              <li><a href="#">Log In</a></li>
-              <li><a href="#">Join Now</a></li>
+              <li><Link to="/login">Log In</Link></li>
+              <li><Link to="/registration">Register</Link></li>
               <li><a href="#">Profile</a></li>
               <li><a href="#">link 1</a></li>
               <li><a href="#">link 2</a></li>

@@ -5,6 +5,7 @@ import PageTypeTodosExample from './components/page/mods/type/todos-example';
 import PageTypeLandingExample from './components/page/mods/type/landing-example';
 import PageTypeNewLanding from './components/page/mods/type/new-landing-page';
 import PageTypeRegistration from './components/page/mods/type/registration-page';
+import PageTypeLogin from './components/page/mods/type/login-page';
 
 export default (
   <Route path="/">
@@ -13,6 +14,7 @@ export default (
     <Route path="landing" component={PageTypeLandingExample} />
     <Route path="new-landing" component={PageTypeNewLanding} />
     <Route path="registration" component={PageTypeRegistration} />
+    <Route path="login" component={PageTypeLogin} />
     <Route path="*" component={PageType404} />
   </Route>
 );
