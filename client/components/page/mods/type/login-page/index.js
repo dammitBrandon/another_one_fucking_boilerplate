@@ -1,14 +1,30 @@
 import Page from 'client/components/page';
 import Loader from 'client/components/loader';
 import Header from 'client/components/header';
+import Input from 'client/components/input';
+import Model from './model';
 import i18n from './i18n';
 
 export default class PageTypeLogin extends Page {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false
+      isLoading: false,
+      email: '',
+      password: ''
     };
+  }
+
+  _handleInputChange(key, e) {
+    console.log('PageTypeLogin#_handleInputChange e: ', e.target.value);
+    this.state[key] = e.target.value;
+    this.model.syncInputText(e.target.value, key);
+  }
+
+  _handleClick(e) {
+    console.log('PageTypeLogin#_handleClick e: ', e.target.value);
+    this.model.login(this.state.email, this.state.password);
+    console.log('PageTypeLogin#_handleClick');
   }
 
   render() {
@@ -21,13 +37,24 @@ export default class PageTypeLogin extends Page {
           <div className="grid-x grid-padding-x">
             <div className="medium-6 cell">
               <label>
-                <input type="text" placeholder="Email" />
+                <Input
+                  value={state.email}
+                  placeholder={'Enter email here'}
+                  onChange={this._handleInputChange.bind(this, 'email')}
+                />
               </label>
             </div>
             <div className="medium-6 cell">
               <label>
-                <input type="text" placeholder="Password" />
+                <Input
+                  value={state.password}
+                  placeholder={'Enter password here'}
+                  onChange={this._handleInputChange.bind(this, 'password')}
+                />
               </label>
+            </div>
+            <div className="medium-6 cell">
+              <button type="button" className="button" onClick={this._handleClick.bind(this)}>Submit</button>
             </div>
           </div>
         </div>
@@ -38,3 +65,4 @@ export default class PageTypeLogin extends Page {
 }
 
 PageTypeLogin.i18n = i18n;
+PageTypeLogin.Model = Model;
