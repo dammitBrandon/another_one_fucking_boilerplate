@@ -33,18 +33,11 @@ export default class PageTypeRegistration extends Page {
   }
 
   _handleInputChange(key, e) {
-    console.log('PageTypeLogin#_handleInputChange e: ', e.target.value);
-    console.log('this.state: ', this.state);
-    // form.creditCard.expirationDate =>
     deepPick(this.state, key, e.target.value);
-    console.log('new this.state: ', this.state);
-    this.model.syncInputText(e.target.value, key);
   }
 
-  _handleClick(e) {
-    console.log('PageTypeRegistration#_handleClick e: ', e.target.value);
+  _handleClick() {
     this.model.registerUser(this.state);
-    console.log('PageTypeRegistration#_handleClick');
   }
 
   render() {

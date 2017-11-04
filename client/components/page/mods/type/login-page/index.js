@@ -16,15 +16,12 @@ export default class PageTypeLogin extends Page {
   }
 
   _handleInputChange(key, e) {
-    console.log('PageTypeLogin#_handleInputChange e: ', e.target.value);
     this.state[key] = e.target.value;
     this.model.syncInputText(e.target.value, key);
   }
 
-  _handleClick(e) {
-    console.log('PageTypeLogin#_handleClick e: ', e.target.value);
+  _handleClick() {
     this.model.login(this.state.email, this.state.password);
-    console.log('PageTypeLogin#_handleClick');
   }
 
   render() {

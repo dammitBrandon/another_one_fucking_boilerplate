@@ -13,7 +13,6 @@ export default class RegistrationPageModel extends Model {
   }
 
   _handleRegisterUser({ registrationForm }) {
-    console.log('handleRegisterUser: ', registrationForm);
     let query = { registrationForm };
 
     return API.get(`${GATE}/register`, query)
@@ -21,12 +20,10 @@ export default class RegistrationPageModel extends Model {
   }
 
   registerUser(registrationForm) {
-    console.log('RegistrationPageModel#registerUser ', { registrationForm });
     this.emit(EVENTS.Register, { registrationForm });
   }
 
   syncInputText(text, key) {
-    console.log('RegistrationPageModel#syncInputText: ', [...arguments]);
     this.setState(Object.assign({}, { [key]: text }));
   }
 }

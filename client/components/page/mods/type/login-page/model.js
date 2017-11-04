@@ -13,9 +13,6 @@ export default class LoginPageModel extends Model {
   }
 
   _handleLogin({ email, password }) {
-    console.log('handeLogin email: ', email);
-    console.log('handeLogin password: ', password);
-
     let query = { email, password };
 
     return API.get(`${GATE}/login`, query)
@@ -23,12 +20,10 @@ export default class LoginPageModel extends Model {
   }
 
   login(email, password) {
-    console.log('LoginPageModel#login ', [...arguments]);
     this.emit(EVENTS.Login, { email, password });
   }
 
   syncInputText(text, key) {
-    console.log('syncInputText: ', [...arguments]);
     this.setState({ [key]: text });
   }
 }
