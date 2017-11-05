@@ -21,7 +21,8 @@ module.exports = {
 
   externals: {
     jquery: 'jQuery',
-    foundation: 'Foundation'
+    foundation: 'Foundation',
+    mongoose: 'mongoose'
   },
 
   target: 'node',
@@ -46,7 +47,8 @@ module.exports = {
       debug: IS_DEBUG
     }),
     new webpack.ProvidePlugin({ React: 'react' }),
-    new ExtractTextPlugin('.modules.css')
+    new ExtractTextPlugin('.modules.css'),
+    new webpack.IgnorePlugin(/vertx/)
   ],
 
   devtool: IS_DEBUG ? 'source-map' : '',

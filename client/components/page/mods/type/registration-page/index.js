@@ -34,6 +34,7 @@ export default class PageTypeRegistration extends Page {
 
   _handleInputChange(key, e) {
     deepPick(this.state, key, e.target.value);
+    this.model.syncInputText(e.target.value, key);
   }
 
   _handleClick() {
@@ -84,7 +85,7 @@ export default class PageTypeRegistration extends Page {
                 <Input
                   value={state.form.emailAddress}
                   placeholder={'Email Address'}
-                  onChnage={this._handleInputChange.bind(this, 'form.emailAddress')}
+                  onChange={this._handleInputChange.bind(this, 'form.emailAddress')}
                 />
               </label>
             </div>
@@ -95,7 +96,7 @@ export default class PageTypeRegistration extends Page {
                 <Input
                   value={state.form.password}
                   placeholder={'Password'}
-                  onChnage={this._handleInputChange.bind(this, 'form.password')}
+                  onChange={this._handleInputChange.bind(this, 'form.password')}
                 />
               </label>
             </div>
@@ -104,7 +105,7 @@ export default class PageTypeRegistration extends Page {
                 <Input
                   value={state.form.confirmPassword}
                   placeholder={'Confirm Password'}
-                  onChnage={this._handleInputChange.bind(this, 'form.confirmPassword')}
+                  onChange={this._handleInputChange.bind(this, 'form.confirmPassword')}
                 />
               </label>
             </div>

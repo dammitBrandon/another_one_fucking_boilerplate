@@ -19,7 +19,8 @@ const PLUGINS = [
   }),
   new ExtractTextPlugin({
     filename: 'bundle_[hash].css'
-  })
+  }),
+  new webpack.IgnorePlugin(/vertx/)
 ];
 
 module.exports = LANGS.map(lang => ({
@@ -32,7 +33,8 @@ module.exports = LANGS.map(lang => ({
 
   externals: {
     foundation: 'Foundation',
-    jquery: 'jQuery'
+    jquery: 'jQuery',
+    mongoose: 'mongoose'
   },
 
   cache: IS_DEBUG,
