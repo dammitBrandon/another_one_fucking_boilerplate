@@ -3,11 +3,13 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express';
 import session from 'express-session';
+import passport from 'passport';
+// import flash from 'connect-flash';
+// import logger from 'morgan';
 import ReactDOM from 'react-dom/server';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import createRedisStore from 'connect-redis';
-import { MongoClient } from 'mongodb';
 import { match, RouterContext } from 'react-router';
 import Html from 'client/components/html';
 import routes from 'client/routes';
@@ -15,13 +17,23 @@ import I18N from 'lib/i18n';
 import config from 'config';
 import API from './api';
 import providers from './providers';
+import mongoose from 'mongoose';
+import configurePassport from 'config/server/passport';
+import seedData from 'config/server/seedData';
+import util from 'util';
+import User from 'server/models/users';
+import local from 'config/server/passport-stategies/local';
+
+const debug = require('debug')('homein-api:index');
 
 const PORT = config.port;
 const LANGS = config.langs;
 const ASSETS = JSON.parse(fs.readFileSync(path.join(__dirname, 'assets.json'), 'utf8'));
 
+mongoose.Promise = global.Promise;
+
 let server = express();
-let mongoConnection;
+// let mongoConnection;
 
 if (config.env === 'development') {
   server.use(express.static(path.join(__dirname, 'public')));
@@ -58,21 +70,45 @@ server.use(session(Object.assign({}, config.session, {
   store: new (createRedisStore(session))(config.redis)
 })));
 
-server.use((req, res, next) => {
-  if (!mongoConnection) {
-    mongoConnection = MongoClient.connect(config.mongodb);
-  }
+// server.use((req, res, next) => {
+//   if (!mongoConnection) {
+//     mongoConnection = mongoose.connect(config.mongodb, { useMongoClient: true });
+//   }
+//
+//   mongoConnection
+//     .then(db => {
+//       req.db = db;
+//       next();
+//     })
+//     .catch(err => {
+//       mongoConnection = null;
+//       next(err);
+//     });
+// });
 
-  mongoConnection
-    .then(db => {
-      req.db = db;
-      next();
-    })
-    .catch(err => {
-      mongoConnection = null;
-      next(err);
-    });
+mongoose.connect(config.mongodb, { useMongoClient: true });
+
+mongoose.connection.on('error', () => {
+  throw new Error(`unable to connect to database: ${config.mongodb}`);
 });
+
+if (config.env === 'development') {
+  mongoose.set('debug', (collectionName, method, query, doc) => {
+    debug(`${ collectionName }.${ method }`, util.inspect(query, false, 20), doc);
+  });
+}
+
+server.use(passport.initialize());
+server.use(passport.session());
+passport.use(local);
+passport.serializeUser((user, done) => { return done(null, user); });
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    return done(err, user);
+  });
+});
+configurePassport(passport);
+seedData();
 
 server.use('/api', API);
 
