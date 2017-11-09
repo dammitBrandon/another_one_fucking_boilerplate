@@ -16,7 +16,10 @@ export default class RegistrationPageModel extends Model {
     let query = { registrationForm };
 
     return API.create(`${GATE}/register`, query)
-      .then(data => console.log(data));
+      .then(
+        data => console.log('user object data that we got back: ', data),
+        err => console.error('something went so wrong here, fuck: ', err)
+      );
   }
 
   registerUser(registrationForm) {

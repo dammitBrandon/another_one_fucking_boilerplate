@@ -21,7 +21,7 @@
     "watch:server-bundle": "nodemon build/server.js",
     "watch": "npm-run-all --parallel watch:client watch:server watch:server-bundle",
     "set-db": "node build/db.js",
-    "dev": "npm install && npm-run-all test clean build set-db watch",
+    "dev": "npm install && npm-run-all test clean build set-db watch:server-bundle",
     "prod:build": "npm install && NODE_ENV=production npm-run-all test clean build && npm prune --production",
     "prod": "npm run prod:build && npm run set-db; pm2 start build/server.js -i 0 -l /var/log/node/ || pm2 reload all",
     "deploy": "npm install shipit-cli shipit-deploy && shipit production deploy"
@@ -105,6 +105,9 @@
     "whatwg-fetch": "^0.11.0"
   },
   "dependencies": {
-    "foundation-sites": "^6.4.3"
+    "foundation-sites": "^6.4.3",
+    "jquery": ">=3.0.0",
+    "what-input": "^4.1.3",
+    "motion-ui": "~1.2.2"
   }
 }

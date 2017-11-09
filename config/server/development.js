@@ -1,6 +1,6 @@
 export default {
   port: 3000,
-  mongodb: 'mongodb://localhost:27017/boilerplate',
+  mongodb: 'mongodb://Brandons-MacBook-Pro.local:27017/satactprep',
   redis: {
     host: 'localhost',
     port: 6379

@@ -7,7 +7,6 @@ import ReactDOM from 'react-dom/server';
 import bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import createRedisStore from 'connect-redis';
-import { MongoClient } from 'mongodb';
 import { match, RouterContext } from 'react-router';
 import Html from 'client/components/html';
 import routes from 'client/routes';
@@ -15,10 +14,16 @@ import I18N from 'lib/i18n';
 import config from 'config';
 import API from './api';
 import providers from './providers';
-
+import mongoose from 'mongoose';
+import passport from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import User from 'server/models/user';
 const PORT = config.port;
 const LANGS = config.langs;
 const ASSETS = JSON.parse(fs.readFileSync(path.join(__dirname, 'assets.json'), 'utf8'));
+
+// Configure mongoose and connect to MongoDB
+mongoose.Promise = global.Promise;
 
 let server = express();
 let mongoConnection;
@@ -30,6 +35,8 @@ if (config.env === 'development') {
 server.use(cookieParser());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
+server.use(passport.initialize());
+server.use(passport.session());
 
 server.use((req, res, next) => {
   let langFromQuery = req.query.lang;
@@ -60,7 +67,7 @@ server.use(session(Object.assign({}, config.session, {
 
 server.use((req, res, next) => {
   if (!mongoConnection) {
-    mongoConnection = MongoClient.connect(config.mongodb);
+    mongoConnection = mongoose.connect(config.mongodb, { useMongoClient: true, keepAlive: 1 });
   }
 
   mongoConnection
@@ -73,6 +80,11 @@ server.use((req, res, next) => {
       next(err);
     });
 });
+
+// Configure passport and define user local strategy
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 server.use('/api', API);
 
@@ -90,14 +102,14 @@ server.use((req, res) => {
       let loadPage = function(data = {}) {
         res
           .status(200).send(
-            '<!doctype html>' +
-            ReactDOM.renderToStaticMarkup(<Html
-              lang={lang}
-              data={data}
-              body={ReactDOM.renderToString(<RouterContext {...renderProps} />)}
-              bundle={ASSETS[lang]}
-              pageName={pageName}
-            />));
+          '<!doctype html>' +
+          ReactDOM.renderToStaticMarkup(<Html
+            lang={lang}
+            data={data}
+            body={ReactDOM.renderToString(<RouterContext {...renderProps} />)}
+            bundle={ASSETS[lang]}
+            pageName={pageName}
+          />));
       };
 
       req.query = renderProps.location.query;
