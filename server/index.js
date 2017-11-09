@@ -35,8 +35,6 @@ if (config.env === 'development') {
 server.use(cookieParser());
 server.use(bodyParser.json());
 server.use(bodyParser.urlencoded({ extended: true }));
-server.use(passport.initialize());
-server.use(passport.session());
 
 server.use((req, res, next) => {
   let langFromQuery = req.query.lang;
@@ -82,6 +80,8 @@ server.use((req, res, next) => {
 });
 
 // Configure passport and define user local strategy
+server.use(passport.initialize());
+server.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());

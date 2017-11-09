@@ -1,16 +1,14 @@
 import { Router } from 'express';
 import User from 'server/models/user';
-// import passport from 'passport';
+import passport from 'passport';
 // import httpStatus from 'http-status';
 
 let API = new Router();
 
-API.post('/login', (req, res) => {
+API.post('/login', passport.authenticate('local', {}, (req, res) => {
   console.log('attempting to login');
-  console.log('req.body: ', req.body);
-  console.log('req.query: ', req.query);
-  res.sendStatus(200);
-});
+  res.redirect('/');
+}));
 
 API.post('/register', (req, res) => {
   console.log('creating a new user');
