@@ -15,7 +15,7 @@ export default class LoginPageModel extends Model {
   _handleLogin({ email, password }) {
     let query = { email, password };
 
-    return API.get(`${GATE}/login`, query)
+    return API.create(`${GATE}/login`, query)
       .then(data => console.log(data));
   }
 

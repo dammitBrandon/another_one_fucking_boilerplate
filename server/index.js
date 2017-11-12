@@ -82,9 +82,34 @@ server.use((req, res, next) => {
 // Configure passport and define user local strategy
 server.use(passport.initialize());
 server.use(passport.session());
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+passport.use(new LocalStrategy({ usernameField: 'email', passwordField: 'password' }, (email, password, done) => {
+  User.findOne({ email }, (err, user) => {
+    if (!user) {
+      console.log('User email not found!, user: ', user);
+      return done(null, false);
+    }
+
+    console.log('using local strategy to authenticate user...');
+    user.comparePassword(password, (err, isMatch) => {
+      if (isMatch) {
+        console.log('User has been found, user: ', user);
+        return done(null, user);
+      }
+      console.log('User found, invalid password');
+      return done(null, false);
+    });
+  });
+}));
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser((id, done) => {
+  User.findById(id, (err, user) => {
+    done(err, user);
+  });
+});
 
 server.use('/api', API);
 
