@@ -2,7 +2,7 @@ export default {
   port: 3000,
   mongodb: 'mongodb://Brandons-MacBook-Pro.local:27017/satactprep',
   redis: {
-    host: 'localhost',
+    host: '127.0.0.1',
     port: 6379
   },
   session: {

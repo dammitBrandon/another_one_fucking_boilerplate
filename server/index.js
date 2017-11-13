@@ -60,7 +60,10 @@ server.use((req, res, next) => {
 });
 
 server.use(session(Object.assign({}, config.session, {
-  store: new (createRedisStore(session))(config.redis)
+  store: new (createRedisStore(session))(config.redis),
+  secret: config.session.secret,
+  resave: false,
+  saveUninitialized: false
 })));
 
 server.use((req, res, next) => {
@@ -82,24 +85,70 @@ server.use((req, res, next) => {
 // Configure passport and define user local strategy
 server.use(passport.initialize());
 server.use(passport.session());
-passport.use(new LocalStrategy({ usernameField: 'email', passwordField: 'password' }, (email, password, done) => {
-  User.findOne({ email }, (err, user) => {
-    if (!user) {
-      console.log('User email not found!, user: ', user);
-      return done(null, false);
-    }
+passport.use('local-login', new LocalStrategy(
+  {
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true
+  },
 
-    console.log('using local strategy to authenticate user...');
-    user.comparePassword(password, (err, isMatch) => {
-      if (isMatch) {
-        console.log('User has been found, user: ', user);
-        return done(null, user);
+  (req, email, password, done) => {
+    console.log('inside local-login');
+
+    User.findOne({ email }, (err, user) => {
+      if (!user) {
+        console.log('User email not found!, user: ', user);
+        return done(null, false);
       }
-      console.log('User found, invalid password');
-      return done(null, false);
+
+      console.log('using local-login strategy to authenticate user...');
+      user.comparePassword(password, (err, isMatch) => {
+        if (!isMatch) {
+          console.log('User found, invalid password');
+          return done(null, false);
+        }
+
+        console.log('Calling req.logIn...');
+        req.logIn(user, err => {
+          if (err) {
+            console.error('Error, Failed to login user successfully using local-login strategy, err: ', err);
+            return done(null, err);
+          }
+
+          console.log('User has been found, user: ', user);
+          console.log('req.user: ', req.user);
+          return done(null, user);
+        });
+      });
     });
-  });
-}));
+  }));
+
+passport.use('local-register', new LocalStrategy(
+  {
+    usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true
+  },
+  (req, email, password, done) => {
+    console.log('inside local-register');
+
+    User.findOne({ email }, (err, user) => {
+      if (!user) {
+        console.log('User email not found!, user: ', user);
+        return done(null, false);
+      }
+
+      console.log('using local-register strategy to authenticate user...');
+      user.comparePassword(password, (err, isMatch) => {
+        if (isMatch) {
+          console.log('User has been found, user: ', user);
+          return done(null, user);
+        }
+        console.log('User found, invalid password');
+        return done(null, false);
+      });
+    });
+  }));
 
 passport.serializeUser((user, done) => {
   done(null, user.id);

@@ -13,9 +13,10 @@ const UserSchema = new mongoose.Schema({
     lowercase: true,
     index: true
   },
+  phoneNumber: String,
   hashedPassword: String,
   salt: String
-});
+}, { timestamps: true });
 
 UserSchema
   .virtual('password')

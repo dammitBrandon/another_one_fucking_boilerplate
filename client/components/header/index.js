@@ -1,7 +1,16 @@
 import Component from 'lib/component';
 import { Link } from 'react-router';
+import Model from './model';
 
 export default class Header extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  _logout() {
+    console.log('Header#_logout...');
+    this.model.logout();
+  }
 
   render() {
     return (
@@ -20,6 +29,7 @@ export default class Header extends Component {
           <div className="top-bar-right">
             <ul className="dropdown menu">
               <li><Link to="/login">Log In</Link></li>
+              <li><a onClick={this._logout.bind(this)}>Log Out</a></li>
               <li><Link to="/registration">Register</Link></li>
               <li><a href="#">Profile</a></li>
               <li><a href="#">link 1</a></li>
@@ -33,3 +43,5 @@ export default class Header extends Component {
     );
   }
 }
+
+Header.Model = Model;
