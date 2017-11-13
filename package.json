@@ -51,11 +51,7 @@
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.1",
     "coveralls": "^2.11.6",
-<<<<<<< HEAD
-=======
     "copy-webpack-plugin": "^4.1.0",
-    "crypto": "0.0.3",
->>>>>>> master
     "css-loader": "^0.23.1",
     "csscomb": "^3.1.8",
     "debug": "^2.4.5",
