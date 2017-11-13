@@ -32,8 +32,6 @@ module.exports = LANGS.map(lang => ({
   },
 
   externals: {
-    foundation: 'Foundation',
-    jquery: 'jQuery',
     mongoose: 'mongoose'
   },
 
@@ -68,7 +66,7 @@ module.exports = LANGS.map(lang => ({
     modules: [__dirname, 'node_modules'],
     extensions: ['.js', '.json', '.jsx', '.css', '.scss'],
     alias: {
-      foundation: path.resolve(__dirname, 'node_modules/foundation-sites/dist/js/foundation.js')
+      foundation_sites: 'foundation-sites/js'
     }
   },
 
@@ -77,6 +75,12 @@ module.exports = LANGS.map(lang => ({
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
+        include: [
+          path.join(__dirname, 'client'),
+          path.join(__dirname, 'config'),
+          path.join(__dirname, 'lib'),
+          path.join(__dirname, 'node_modules/foundation-sites/js')
+        ],
         use: 'babel-loader'
       },
       {

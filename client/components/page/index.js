@@ -18,6 +18,7 @@ export default class Page extends Component {
   componentDidMount() {
     let model = this.model;
 
+    window.$(document).foundation();
     document.body.className = this.styles.body || '';
     this._updateTitle();
 
