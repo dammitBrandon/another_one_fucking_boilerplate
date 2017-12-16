@@ -15,17 +15,14 @@ import config from 'config';
 import API from './api';
 import providers from './providers';
 import mongoose from 'mongoose';
+import configureMongoose from 'config/server/mongoose';
 import passport from 'passport';
 import configurePassport from 'config/server/passport';
 const PORT = config.port;
 const LANGS = config.langs;
 const ASSETS = JSON.parse(fs.readFileSync(path.join(__dirname, 'assets.json'), 'utf8'));
 
-// Configure mongoose and connect to MongoDB
-mongoose.Promise = global.Promise;
-
 let server = express();
-let mongoConnection;
 
 if (config.env === 'development') {
   server.use(express.static(path.join(__dirname, 'public')));
@@ -65,22 +62,7 @@ server.use(session(Object.assign({}, config.session, {
   saveUninitialized: false
 })));
 
-server.use((req, res, next) => {
-  if (!mongoConnection) {
-    mongoConnection = mongoose.connect(config.mongodb, { useMongoClient: true, keepAlive: 1 });
-  }
-
-  mongoConnection
-    .then(db => {
-      req.db = db;
-      next();
-    })
-    .catch(err => {
-      mongoConnection = null;
-      next(err);
-    });
-});
-
+configureMongoose(server, mongoose);
 configurePassport(server, passport);
 
 server.use('/api', API);
