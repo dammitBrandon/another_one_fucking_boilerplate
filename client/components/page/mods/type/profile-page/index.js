@@ -27,31 +27,32 @@ export default class PageTypeProfile extends Page {
 
   render() {
     const { firstName, lastName, billingAddress, ccInfo } = this.state;
+
     return (
       <div>
         <Header />
-        <h2>Welcome { firstName }!</h2>
-        <br/>
+        <h2>Welcome {firstName}!</h2>
+        <br />
         <div>
           <h3>Account Info</h3>
 
           <p>
-            <span>{ firstName } { lastName }</span>
-            <br/>
+            <span>{firstName} {lastName}</span>
+            <br />
             Billing Address:
-            <br/>
-            <span>{ billingAddress.address1 }</span>
-            <br/>
-            <span>{ billingAddress.city }</span>
-            <br/>
-            <span>{ billingAddress.state } { billingAddress.zipCode }</span>
-            <br/>
-            <br/>
+            <br />
+            <span>{billingAddress.address1}</span>
+            <br />
+            <span>{billingAddress.city}</span>
+            <br />
+            <span>{billingAddress.state} {billingAddress.zipCode}</span>
+            <br />
+            <br />
             Credit Card Info:
-            <br/>
-            <span>{ ccInfo.cardNumber }</span>
-            <br/>
-            <span>{ ccInfo.expDate }</span>
+            <br />
+            <span>{ccInfo.cardNumber}</span>
+            <br />
+            <span>{ccInfo.expDate}</span>
           </p>
         </div>
       </div>

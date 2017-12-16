@@ -15,8 +15,21 @@ export default class LoginPageModel extends Model {
   _handleLogin({ email, password }) {
     let query = { email, password };
 
-    return API.create(`${GATE}/login`, query)
-      .then(data => console.log(data));
+    return API.create(`${GATE}/login-user`, query)
+      .then(data => {
+        console.log('attempted to login, data below');
+        console.log(data);
+        console.log('redirecting to the profile page');
+        window.location.href = 'http://localhost:3000/profile';
+      })
+      .catch(err => {
+        console.log('login attempt failed, see error: ', err);
+        console.log('======================================');
+        console.log('additional arguments: ', arguments);
+        console.log('======================================');
+        console.log('transitioning to / page');
+        window.location.href = 'http://localhost:3000/';
+      });
   }
 
   login(email, password) {

@@ -15,9 +15,6 @@ import config from 'config';
 import API from './api';
 import providers from './providers';
 import mongoose from 'mongoose';
-import passport from 'passport';
-import { Strategy as LocalStrategy } from 'passport-local';
-import User from 'server/models/user';
 const PORT = config.port;
 const LANGS = config.langs;
 const ASSETS = JSON.parse(fs.readFileSync(path.join(__dirname, 'assets.json'), 'utf8'));
@@ -80,84 +77,6 @@ server.use((req, res, next) => {
       mongoConnection = null;
       next(err);
     });
-});
-
-// Configure passport and define user local strategy
-server.use(passport.initialize());
-server.use(passport.session());
-passport.use('local-login', new LocalStrategy(
-  {
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true
-  },
-
-  (req, email, password, done) => {
-    console.log('inside local-login');
-
-    User.findOne({ email }, (err, user) => {
-      if (!user) {
-        console.log('User email not found!, user: ', user);
-        return done(null, false);
-      }
-
-      console.log('using local-login strategy to authenticate user...');
-      user.comparePassword(password, (err, isMatch) => {
-        if (!isMatch) {
-          console.log('User found, invalid password');
-          return done(null, false);
-        }
-
-        console.log('Calling req.logIn...');
-        req.logIn(user, err => {
-          if (err) {
-            console.error('Error, Failed to login user successfully using local-login strategy, err: ', err);
-            return done(null, err);
-          }
-
-          console.log('User has been found, user: ', user);
-          console.log('req.user: ', req.user);
-          return done(null, user);
-        });
-      });
-    });
-  }));
-
-passport.use('local-register', new LocalStrategy(
-  {
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true
-  },
-  (req, email, password, done) => {
-    console.log('inside local-register');
-
-    User.findOne({ email }, (err, user) => {
-      if (!user) {
-        console.log('User email not found!, user: ', user);
-        return done(null, false);
-      }
-
-      console.log('using local-register strategy to authenticate user...');
-      user.comparePassword(password, (err, isMatch) => {
-        if (isMatch) {
-          console.log('User has been found, user: ', user);
-          return done(null, user);
-        }
-        console.log('User found, invalid password');
-        return done(null, false);
-      });
-    });
-  }));
-
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
 });
 
 server.use('/api', API);
