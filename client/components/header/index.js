@@ -31,7 +31,7 @@ export default class Header extends Component {
               <li><Link to="/login">Log In</Link></li>
               <li><a onClick={this._logout.bind(this)}>Log Out</a></li>
               <li><Link to="/registration">Register</Link></li>
-              <li><a href="#">Profile</a></li>
+              <li><a href="/profile">Profile</a></li>
               <li><a href="#">link 1</a></li>
               <li><a href="#">link 2</a></li>
               <li><input type="search" placeholder="Search" /></li>

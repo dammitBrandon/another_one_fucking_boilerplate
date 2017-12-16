@@ -32,6 +32,18 @@ export default class PageTypeRegistration extends Page {
     };
   }
 
+  componentWillMount() {
+    console.log('componentWillMount');
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount');
+  }
+
+  componentWillUnmount() {
+    console.log('componentWillUnmount');
+  }
+
   _handleInputChange(key, e) {
     deepPick(this.state, key, e.target.value);
     this.model.syncInputText(e.target.value, key);
@@ -95,6 +107,7 @@ export default class PageTypeRegistration extends Page {
               <label>
                 <Input
                   value={state.form.password}
+                  type={'password'}
                   placeholder={'Password'}
                   onChange={this._handleInputChange.bind(this, 'form.password')}
                 />
@@ -104,6 +117,7 @@ export default class PageTypeRegistration extends Page {
               <label>
                 <Input
                   value={state.form.confirmPassword}
+                  type={'password'}
                   placeholder={'Confirm Password'}
                   onChange={this._handleInputChange.bind(this, 'form.confirmPassword')}
                 />
