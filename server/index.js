@@ -15,6 +15,8 @@ import config from 'config';
 import API from './api';
 import providers from './providers';
 import mongoose from 'mongoose';
+import passport from 'passport';
+import configurePassport from 'config/server/passport';
 const PORT = config.port;
 const LANGS = config.langs;
 const ASSETS = JSON.parse(fs.readFileSync(path.join(__dirname, 'assets.json'), 'utf8'));
@@ -78,6 +80,8 @@ server.use((req, res, next) => {
       next(err);
     });
 });
+
+configurePassport(server, passport);
 
 server.use('/api', API);
 
