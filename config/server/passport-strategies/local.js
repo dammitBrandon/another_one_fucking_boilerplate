@@ -25,7 +25,6 @@ export default new LocalStrategy(
         if (isMatch) {
           console.log('User has been found, user: ', user);
           req.user = user;
-          console.log('done is the call back fn: ', done);
           return done(null, user);
         }
         console.log('User found, invalid password');
