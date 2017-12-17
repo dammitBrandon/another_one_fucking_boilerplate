@@ -1,17 +1,30 @@
 import { Router } from 'express';
 import User from 'server/models/user';
 import passport from 'passport';
+import AuthService from 'server/AuthService';
 
 let API = new Router();
 
-API.post('/login',
+API.post('/login-test',
   passport.authenticate('local'),
   (req, res) => { // eslint-disable-line
-    res.status(200).json(req.user);
+    console.log('Inside login post route, calling AuthService#setUserInfo');
+    console.log('req.user: ', req.user);
+
+    let userInfo = AuthService.setUserInfo(req.user);
+
+    console.log('Inside login post route, userInfo: ', userInfo);
+
+    res.status(200).json({
+      token: `JWT ${AuthService.generateWebToken(userInfo)}`,
+      user: userInfo
+    });
   });
 
 API.delete('/logout', (req, res) => {
   console.log('logging user out, req.user: ', req.user);
+  req.logOut();
+  console.log('user is logged out, req.user: ', req.user);
   res.sendStatus(200);
 });
 
@@ -34,7 +47,12 @@ API.post('/register', (req, res) => {
         return res.send(err);
       }
 
-      return res.json(user);
+      let userInfo = AuthService.setUserInfo(user);
+
+      return res.status(201).json({
+        token: `JWT ${AuthService.generateWebToken(userInfo)}`,
+        user: userInfo
+      });
     });
   });
 });
